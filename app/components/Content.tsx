@@ -1,3 +1,5 @@
+"use server";
+
 import { Pokemon } from "@/interfaces/pokemon";
 import { CardList } from "./CardList";
 

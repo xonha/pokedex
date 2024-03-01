@@ -7,7 +7,7 @@ export interface PokemonProps {
 
 export function Card({ pokemon }: PokemonProps) {
   return (
-    <div className="flex flex-col w-fit items-center space-y-2 border rounded-md p-4">
+    <div className="flex flex-col w-fit h-fit items-center space-y-2 border rounded-md p-4">
       <Image
         alt={pokemon.name}
         className="aspect-square object-contain overflow-hidden rounded-lg border"

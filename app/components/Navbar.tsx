@@ -1,8 +1,15 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { useDebouncedCallback } from "use-debounce";
+import { searchAtom } from "../atoms";
 
 export default function Navbar() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const setInput = useSetRecoilState(searchAtom);
+  const debounced = useDebouncedCallback((value) => {
+    setInput(value);
+  }, 1000);
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
     if (scrollContainerRef.current)
@@ -15,7 +22,8 @@ export default function Navbar() {
         <input
           className="max-w-sm h-10 rounded-md border-zinc-200 border px-4"
           id="search"
-          placeholder="Search"
+          placeholder="Search for id or name"
+          onChange={(e) => debounced(e.target.value)}
         />
       </div>
       <div
