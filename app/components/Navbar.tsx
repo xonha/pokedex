@@ -8,7 +8,7 @@ export default function Navbar() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const setInput = useSetRecoilState(searchAtom);
   const debounced = useDebouncedCallback((value) => {
-    setInput(value);
+    setInput(value.toLowerCase().trim());
   }, 1000);
 
   const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
