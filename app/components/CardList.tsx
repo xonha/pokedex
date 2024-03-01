@@ -1,23 +1,16 @@
 "use client";
 
-import { Pokemon } from "../interfaces";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { toast } from "sonner";
 import { searchAtom } from "../atoms";
+import { getPokemon, getPokemonsPage } from "../controllers";
+import { Pokemon } from "../interfaces";
 import { Card } from "./Card";
-import { getPokemonsPage } from "./Content";
 import { LoadMoreButton } from "./LoadMoreButton";
 
 interface CardListProps {
   pokemonData: Pokemon[];
-}
-
-export async function getPokemon(nameOrId: string): Promise<Pokemon | null> {
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`);
-  if (!response.ok) return null;
-  const data = await response.json();
-  return data;
 }
 
 export function CardList(props: CardListProps) {
