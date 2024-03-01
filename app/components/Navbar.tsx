@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useSetRecoilState } from "recoil";
 import { useDebouncedCallback } from "use-debounce";
 import { searchAtom } from "../atoms";

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
-import "./globals.css";
-import { Recoil } from "./components/Recoil";
 import { Toaster } from "sonner";
+import { Recoil } from "./components/Recoil";
+import "./globals.css";
 
 const ubuntu = Ubuntu({ subsets: ["latin"], weight: ["300", "300"] });
 
