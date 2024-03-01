@@ -24,7 +24,7 @@ export async function Content() {
   );
 
   return (
-    <div className="flex flex-wrap gap-6 p-6">
+    <div className="flex flex-wrap gap-6 p-6 overflow-x-auto h-screen">
       {pokemonData.map((pokemon: Pokemon) => (
         <Card key={pokemon.id} pokemon={pokemon} />
       ))}
