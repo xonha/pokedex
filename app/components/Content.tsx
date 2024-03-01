@@ -1,5 +1,5 @@
 import { Pokemon } from "@/interfaces/pokemon";
-import { Card } from "./Card";
+import { CardList } from "./CardList";
 
 export interface IResult {
   name: string;
@@ -13,21 +13,21 @@ export interface IResponse {
   results: IResult[];
 }
 
-export async function Content() {
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
+export async function getPokemonsPage(
+  page: number = 0,
+): Promise<Array<Pokemon>> {
+  const response = await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=30&offset=${page * 30}`,
+  );
   const data: IResponse = await response.json();
-  const pokemonData = await Promise.all(
+  return Promise.all(
     data.results.map(async (pokemon) => {
       const res = await fetch(pokemon.url);
       return await res.json();
     }),
   );
+}
 
-  return (
-    <div className="flex flex-wrap gap-6 p-6 overflow-x-auto h-screen">
-      {pokemonData.map((pokemon: Pokemon) => (
-        <Card key={pokemon.id} pokemon={pokemon} />
-      ))}
-    </div>
-  );
+export async function Content() {
+  return <CardList pokemonData={await getPokemonsPage()} />;
 }

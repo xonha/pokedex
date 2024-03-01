@@ -16,11 +16,11 @@ export function Card({ pokemon }: PokemonProps) {
         width="200"
       />
       <div className="text-center">
+        <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          #{pokemon.id}
+        </span>
         <h3 className="text-xl font-bold">
           {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-          <span className="pl-2 font-medium text-gray-500 dark:text-gray-400">
-            #{pokemon.id}
-          </span>
         </h3>
         <div className="flex flex-row gap-2 justify-center">
           {pokemon.types.map((type) => (
