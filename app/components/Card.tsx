@@ -1,4 +1,4 @@
-import { Pokemon } from "@/interfaces/pokemon";
+import { Pokemon } from "../interfaces";
 import Image from "next/image";
 
 export interface PokemonProps {

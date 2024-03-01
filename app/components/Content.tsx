@@ -1,6 +1,6 @@
 "use server";
 
-import { Pokemon } from "@/interfaces/pokemon";
+import { Pokemon } from "../interfaces";
 import { CardList } from "./CardList";
 
 export interface IResult {

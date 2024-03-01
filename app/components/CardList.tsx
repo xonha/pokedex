@@ -1,12 +1,13 @@
 "use client";
-import { Pokemon } from "@/interfaces/pokemon";
+
+import { Pokemon } from "../interfaces";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { toast } from "sonner";
+import { searchAtom } from "../atoms";
 import { Card } from "./Card";
 import { getPokemonsPage } from "./Content";
 import { LoadMoreButton } from "./LoadMoreButton";
-import { useRecoilValue } from "recoil";
-import { searchAtom } from "../atoms";
-import { toast } from "sonner";
 
 interface CardListProps {
   pokemonData: Pokemon[];
