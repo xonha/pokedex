@@ -26,7 +26,7 @@ export function Card({ pokemon }: PokemonProps) {
           {pokemon.types.map((type) => (
             <div
               key={pokemon.id + type.type.name}
-              className={`bg-${type.type.name} w-fit px-1 rounded-md text-white font-bold`}
+              className={`bg-pokemon-${type.type.name} w-fit px-1 rounded-md text-white font-bold`}
             >
               {type.type.name}
             </div>
