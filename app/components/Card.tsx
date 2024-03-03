@@ -11,9 +11,9 @@ export function Card({ pokemon }: PokemonProps) {
       <Image
         alt={pokemon.name}
         className="aspect-square object-contain overflow-hidden rounded-lg border"
-        height="110"
+        height="140"
         src={pokemon.sprites.front_default}
-        width="110"
+        width="140"
       />
       <div className="text-center">
         <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
