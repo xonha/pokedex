@@ -30,5 +30,6 @@ export async function getPokemon(nameOrId: string): Promise<Pokemon | null> {
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nameOrId}`);
   if (!response.ok) return null;
   const data = await response.json();
+  if (data.results && data.results.length !== 1) return null;
   return data;
 }

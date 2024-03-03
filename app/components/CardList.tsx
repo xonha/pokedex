@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { filterTypesAtom, searchAtom } from "../atoms";
-import { getPokemonsPage } from "../controllers";
+import { getPokemon, getPokemonsPage } from "../controllers";
 import { Pokemon } from "../interfaces";
 import { Card } from "./Card";
 import { LoadMoreButton } from "./LoadMoreButton";
+import { toast } from "sonner";
 
 interface CardListProps {
   pokemonData: Pokemon[];
@@ -14,11 +15,10 @@ interface CardListProps {
 
 export function CardList(props: CardListProps) {
   const [pokemons, setPokemons] = useState(props.pokemonData);
-  const types = useRecoilValue(filterTypesAtom);
-  const [filteredPokemons, setFilteredPokemons] =
-    useState<Array<Pokemon>>(pokemons);
   const [page, setPage] = useState(1);
+  const types = useRecoilValue(filterTypesAtom);
   const searchInput = useRecoilValue(searchAtom);
+  const [filteredPokemons, setFilteredPokemons] = useState<Array<Pokemon>>([]);
 
   async function loadMore() {
     const newPokemonPage = await getPokemonsPage(page);
@@ -43,8 +43,24 @@ export function CardList(props: CardListProps) {
     return filtered;
   }
 
+  async function handleFilter() {
+    const filtered = filterPokemons();
+    if (filtered.length === 0) {
+      if (searchInput === "") {
+        return toast.error("No pokemon found with the selected types!");
+      }
+      const foundPokemon = await getPokemon(searchInput);
+      if (!foundPokemon) {
+        return toast.error(`No pokemon found with the name ${searchInput}!`);
+      }
+      setFilteredPokemons([foundPokemon]);
+    } else {
+      setFilteredPokemons(filtered);
+    }
+  }
+
   useEffect(() => {
-    setFilteredPokemons(filterPokemons());
+    handleFilter();
   }, [types, searchInput, pokemons]);
 
   return (

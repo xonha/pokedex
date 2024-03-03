@@ -8,7 +8,6 @@ export function TypeButton(props: { color: string }) {
 
   const handleTypeButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     const newType = event.currentTarget.innerText;
-    console.log(newType);
 
     if (types.indexOf(newType) === -1) {
       if (types.length === 2) {
