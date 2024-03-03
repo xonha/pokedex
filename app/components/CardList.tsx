@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { toast } from "sonner";
-import { searchAtom } from "../atoms";
-import { getPokemon, getPokemonsPage } from "../controllers";
+import { filterTypesAtom, searchAtom } from "../atoms";
+import { getPokemonsPage } from "../controllers";
 import { Pokemon } from "../interfaces";
 import { Card } from "./Card";
 import { LoadMoreButton } from "./LoadMoreButton";
@@ -15,7 +14,9 @@ interface CardListProps {
 
 export function CardList(props: CardListProps) {
   const [pokemons, setPokemons] = useState(props.pokemonData);
-  const [filteredPokemons, setFilteredPokemons] = useState<Array<Pokemon>>([]);
+  const types = useRecoilValue(filterTypesAtom);
+  const [filteredPokemons, setFilteredPokemons] =
+    useState<Array<Pokemon>>(pokemons);
   const [page, setPage] = useState(1);
   const searchInput = useRecoilValue(searchAtom);
 
@@ -25,45 +26,35 @@ export function CardList(props: CardListProps) {
     setPokemons([...pokemons, ...newPokemonPage]);
   }
 
-  useEffect(() => {
-    async function handleInput() {
-      if (searchInput !== "") {
-        const filtered = pokemons.filter((pokemon) =>
-          pokemon.name.includes(searchInput.toLowerCase().trim()),
-        );
-
-        if (filtered.length === 0) {
-          const foundPokemon = await getPokemon(searchInput);
-
-          if (foundPokemon) {
-            setFilteredPokemons([foundPokemon]);
-          } else {
-            toast.error("No pokemon found with that name");
-          }
-        } else setFilteredPokemons(filtered);
-      } else if (searchInput === "") {
-        setFilteredPokemons([]);
-      }
-    }
-    handleInput();
-  }, [searchInput]);
-
-  if (filteredPokemons.length > 0) {
-    return (
-      <div className="flex flex-wrap gap-6 p-6 overflow-x-auto h-screen justify-center">
-        {filteredPokemons.map((pokemon: Pokemon) => (
-          <Card key={pokemon.id} pokemon={pokemon} />
-        ))}
-      </div>
-    );
+  function filterPokemons() {
+    const filtered = pokemons.filter((pokemon) => {
+      const nameMatch = pokemon.name.includes(searchInput.toLowerCase().trim());
+      const typeMatch1 = pokemon.types.some((type) =>
+        type.type.name.includes(types[0]),
+      );
+      const typeMatch2 = pokemon.types.some((type) =>
+        type.type.name.includes(types[1]),
+      );
+      if (!types[0] && !types[1]) return nameMatch;
+      if (!types[0]) return nameMatch && typeMatch2;
+      if (!types[1]) return nameMatch && typeMatch1;
+      return nameMatch && typeMatch1 && typeMatch2;
+    });
+    return filtered;
   }
+
+  useEffect(() => {
+    setFilteredPokemons(filterPokemons());
+  }, [types, searchInput, pokemons]);
 
   return (
     <div className="flex flex-wrap gap-6 p-6 overflow-x-auto h-screen justify-center">
-      {pokemons.map((pokemon: Pokemon) => (
+      {filteredPokemons.map((pokemon: Pokemon) => (
         <Card key={pokemon.id} pokemon={pokemon} />
       ))}
-      <LoadMoreButton onLoadMore={loadMore} />
+      {filteredPokemons.length === pokemons.length ? (
+        <LoadMoreButton onLoadMore={loadMore} />
+      ) : null}
     </div>
   );
 }
