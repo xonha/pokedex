@@ -15,7 +15,7 @@ export async function getPokemonsPage(
   page: number = 0,
 ): Promise<Array<Pokemon>> {
   const response = await fetch(
-    `https://pokeapi.co/api/v2/pokemon?limit=30&offset=${page * 30}`,
+    `https://pokeapi.co/api/v2/pokemon?limit=50&offset=${page * 50}`,
   );
   const data: IResponse = await response.json();
   return Promise.all(

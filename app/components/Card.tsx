@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { Pokemon } from "../interfaces";
 import Image from "next/image";
 
@@ -6,13 +7,19 @@ export interface PokemonProps {
 }
 
 export function Card({ pokemon }: PokemonProps) {
+  if (!pokemon.sprites.front_default) {
+    toast.error(
+      `Pokemon ${pokemon.name} either has no image or failed to load`,
+    );
+  }
+
   return (
     <div className="flex flex-col w-fit h-fit items-center space-y-2 border rounded-md p-4">
       <Image
         alt={pokemon.name}
         className="aspect-square object-contain overflow-hidden rounded-lg border"
         height="140"
-        src={pokemon.sprites.front_default}
+        src={pokemon.sprites.front_default || ""}
         width="140"
       />
       <div className="text-center">
