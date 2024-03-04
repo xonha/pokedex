@@ -38,7 +38,6 @@ const obj = {
           dark: "#705848",
           steel: "#B8B8D0",
           fairy: "#EE99AC",
-          stellar: "#1476A7",
         },
       },
     },
